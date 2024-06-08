@@ -13,3 +13,15 @@ def mask_account_card(info: str) - > str:
         if len(account_number) < 4:
             raise ValueError("Номер счета должен состоять не менее чем из 4 цифр")
         return f"**{account_number[-4:]}"
+
+    parts =info.split   # Разбиваем строку  на части
+    account_type = parts[0]    # Берем первый элемент (тип карты или слово "Счет")
+
+    if account_type.lower() == "счет":
+        account_number = parts[1]   # Берем номер счета
+        masked_number = get_mask_account(account_number)   # Маскируем номер счета
+        return f"{account_type} {masked_number}" # Возвращаем строку с замаскированным номером счета
+    else:
+        card_number = "".join(parts[2:]) # Соединяем все части номера карты
+        masked_number = get_mask_card_number(card_number) # Маскируем номер карты
+        return f"{parts[0]} {parts[1]} {masked_number}" # Возвращаем строку с замаскированным номером карты
