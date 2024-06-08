@@ -27,8 +27,13 @@ def mask_account_card(info: str) -> str:
         return f"{parts[0]} {parts[1]} {masked_number}"  # Возвращаем строку с замаскированным номером карты
 
 
+# print(mask_account_card("Visa Platinum 7000 7922 8960 6361"))
+# print(mask_account_card("Счет 73654108430135874305"))
+
 def get_data(date_str: str) -> str:
     """Функция преобразует строку из формата 2018-07-11T02:26:18.671407 в формат 11.07.2018"""
     date_part = date_str.split("T")[0]  # Разделяем строку по символу "T"
     year, month, day = date_part.split("-")  # Разделяем дату через "-"
     return f"{day}.{month}.{year}"  # Возвращаем строку в нужном формате
+
+# print(get_data("2018-07-11T02:26:18.671407"))
