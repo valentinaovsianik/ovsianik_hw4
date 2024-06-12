@@ -17,11 +17,11 @@ def filter_by_state(data: list, state: str = "EXECUTED") -> list:
 # print(filter_by_state(data, "CANCELED"))
 
 
-def sort_by_date(date: list, reverse: bool = True) -> list:
+def sort_by_date(data: list[dict], reverse: bool = True) -> list[dict]:
     """Функция  сортирует список словарей по дате"""
-    return sorted(data, key=lambda x: x["date"], reverse=reverse) # Сортировка выполняется по ключу "date". Часть "reverse=reverse" устанавливает порядок сортировки - убывание/возрастание
+    return sorted(data, key=lambda x: x["date"], reverse=reverse) # Сортировка выполняется по ключу "date". Часть "reverse=reverse" устанавливает порядок сортировки - убывание (True)/возрастание (False)
 
-# Сортировка по убыванию
+# Сортировка по убыванию, т. е. сначала последние операции
 sorted_data = sort_by_date(data)
 print(sorted_data)
 
