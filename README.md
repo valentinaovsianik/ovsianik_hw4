@@ -42,5 +42,21 @@ git clone git@github.com
 ## Документация:
 Более подробная документация доступна в комментариях к функциям в коде.
 
+## Тестирование
+
+| Name                      | Stmts | Miss | Cover |
+|---------------------------|-------|------|-------|
+| src/__init__.py           | 0     | 0    | 100%  |
+| src/masks.py              | 12    | 0    | 100%  |
+| src/processing.py         | 11    | 1    | 91%   |
+| src/widget.py             | 23    | 1    | 96%   |
+| tests/__init__.py         | 0     | 0    | 100%  |
+| tests/conftest.py         | 19    | 3    | 84%   |
+| tests/test_masks.py       | 19    | 0    | 100%  |
+| tests/test_processing.py  | 13    | 0    | 100%  |
+| tests/test_widget.py      | 9     | 0    | 100%  |
+| **TOTAL**                 | **106** | **5** | **95%**
+
+
 ## Лицензия:
 На проект распространяется [лицензия MIT](LICENSE).
