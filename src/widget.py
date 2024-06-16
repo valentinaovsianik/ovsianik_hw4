@@ -14,24 +14,22 @@ def mask_account_card(info: str) -> str:
             raise ValueError("Номер счета должен состоять не менее чем из 4 цифр")
         return f"**{account_num[-4:]}"
 
-    parts = info.split(maxsplit=1)  # Разбиваем строку по первому пробелу
+    parts = info.split(maxsplit=1)  # Разбиваем строку по 1 пробелу
     if len(parts) != 2:
         raise ValueError("Неверный формат данных")
 
-    account_type = parts[0].lower()  # Берем первый элемент (тип карты или слово "Счет")
+    account_type, account_number = parts[0], parts[0]  # Берем элементы
 
-    if account_type == "счет":
-        account_number = parts[1].strip()  # Берем номер счета и убираем пробелы
+    if account_type.lower() == "счет":
         masked_number = get_mask_account(account_number)  # Маскируем номер счета
         return f"{account_type} {masked_number}"  # Возвращаем строку с замаскированным номером счета
-    elif account_type in ["visa", "maestro", "mastercard"]:
-        card_number = parts[1].replace(" ", "")  # Берем номер карты, убираем пробелы
-        if len(card_number) != 16 or not card_number.isdigit():   # Проверяем, что номер карты содержи только цифры
-            raise ValueError("Номер карты должен состоять из 16 цифр")
-        masked_number = get_mask_card_number(card_number)  # Маскируем номер карты
-        return f"{parts[0]} {masked_number}"  # Возвращаем строку с замаскированным номером карты
     else:
-        raise ValueError("Нераспознанные данные")
+        try:
+        masked_number = get_mask_card_number(account_number)  # Пытаемся маскировать номер карты
+        except ValueError:
+        masked_number = account_number # Если неполучилось, возвращаем как есть
+
+    return f"{account_type} {masked_number}"  # Возвращаем строку с замаскированным номером карты
 
 
 # print(mask_account_card("Visa Platinum 7000 7922 8960 6361"))

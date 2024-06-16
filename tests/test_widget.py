@@ -15,3 +15,13 @@ from src.widget import mask_account_card, get_data
 ])
 def test_mask_account_card(input_data, expected_output):
     assert mask_account_card(input_data) == expected_output
+
+
+@pytest.mark.parametrize("input_date, expected_output", [
+    ("2018-07-11T02:26:18.671407", "11.07.2018"),
+    ("2020-01-01T00:00:00.000000", "01.01.2020"),
+    ("1999-12-31T23:59:59.999999", "31.12.1999"),
+    ("2023-06-15T10:30:45.123456", "15.06.2023"),
+])
+def test_get_data(input_date, expected_output):
+    assert get_data(input_date) == expected_output
