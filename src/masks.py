@@ -1,3 +1,4 @@
+
 def get_mask_card_number(card_number: str) -> str:
     """Функция, которая маскирует номер карты в формате XXXX XX** **** XXXX"""
     if len(card_number) != 16:
@@ -17,9 +18,9 @@ def get_mask_account(account_number: str) -> str:
 
 
 # Пример работы функции, которая возвращает маску карты
-card_number = "7000792289606361"
-print(get_mask_card_number(card_number))
-
-# Пример работы функции, которая возвращает маску карты
-account_number = "73654108430135874305"
-print(get_mask_account(account_number))
+# card_number = "7000792289606361"
+# print(get_mask_card_number(card_number))
+#
+# # Пример работы функции, которая возвращает маску карты
+# account_number = "73654108430135874305"
+# print(get_mask_account(account_number))
