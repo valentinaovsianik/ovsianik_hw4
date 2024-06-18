@@ -2,7 +2,7 @@ import pytest
 
 from src.processing import filter_by_state, sort_by_date
 
-
+# Тесты для проверки работы функций фильтрации и сортировки
 @pytest.mark.parametrize(
     "state, expected_result",
     [

@@ -2,7 +2,7 @@ import pytest
 
 from src.widget import get_data, mask_account_card
 
-
+# Тест для проверки работы функций для маскирования номеров счетов/карт
 @pytest.mark.parametrize(
     "input_data, expected_output",
     [
@@ -18,7 +18,7 @@ from src.widget import get_data, mask_account_card
 def test_mask_account_card(input_data, expected_output):
     assert mask_account_card(input_data) == expected_output
 
-
+# Тест для проверки работы функци, которая конвертирует дату и время в определенный формат
 @pytest.mark.parametrize(
     "input_date, expected_output",
     [
