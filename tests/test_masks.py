@@ -3,6 +3,7 @@ import pytest
 from src.masks import get_mask_account, get_mask_card_number
 
 
+# Тесты для проверки функции маскировки счета
 @pytest.mark.parametrize(
     "account_number, expected_output", [("73654108430135874305", "**4305"), ("35383033474447895560", "**5560")]
 )
@@ -20,6 +21,7 @@ def test_get_mask_account_length():
         get_mask_account("123")
 
 
+# Тесты для проверки функции маскировки карты
 @pytest.mark.parametrize(
     "card_number, expected_output",
     [("7000792289606361", "7000 79** **** 6361"), ("1596837868705199", "1596 83** **** 5199")],
