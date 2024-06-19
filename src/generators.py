@@ -10,5 +10,9 @@ for _ in range(2):
     print(next(usd_transactions) [id])) # Извлекаются 2 операции с долларом и печалаются их ID
 
 
+# Генератор принимает список словарей и возвращает описание каждой операции по очереди
+descriptions = (transaction.get("description") for transaction in transactions)
 
+for _ in range(5)
+    print(next(descriptions)) # Используется для получения следующего элемента из списка descriptions
 
