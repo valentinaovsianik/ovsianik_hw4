@@ -11,6 +11,8 @@ def filter_by_state(data: list, state: str = "EXECUTED") -> list:
 
 def sort_by_date(data: list[dict], reverse: bool = True) -> list[dict]:
     """Функция сортирует список словарей по дате"""
+    if data is None:
+        raise ValueError("Входные данные не могут быть пустыми")
     sorted_data = sorted(data, key=lambda x: x["date"], reverse=reverse)  # Устанавливаем порядок сортировки
     return sorted_data
 
