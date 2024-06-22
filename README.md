@@ -34,29 +34,43 @@ get_mask_account("73654108430135874305")
 ### `sort_by_date`
 Функция для сортировки операций по дате.
 
+### `def filter_by_currency`
+Функция фильтрации операций по валюте
+
+### `def transaction_descriptions`
+Функция, которая возвращает описание каждой операции в списке
+
+### `def filter_by_currency`
+Генератор номеров бнковских карт в формат XXXX XXXX XXXX XXXX
+
+
 ## Установка:
 Клонируйте репозиторий:
 git clone git@github.com
 /ovsianik_hw4.git
 
+
 ## Документация:
 Более подробная документация доступна в комментариях к функциям в коде.
 
-## Покрытие тестами
+
+## Покрытие тестами:
 
 | Name                        | Stmts | Miss | Cover |
 |-----------------------------|-------|------|-------|
 | src\__init__.py             | 0     | 0    | 100%  |
+| src\generators.py           | 11    | 1    |  91%  |
 | src\masks.py                | 13    | 0    | 100%  |
 | src\processing.py           | 11    | 1    | 91%   |
 | src\widget.py               | 18    | 0    | 100%  |
 | tests\__init__.py           | 0     | 0    | 100%  |
-| tests\conftest.py           | 19    | 3    | 84%   |
+| tests\conftest.py           | 22    | 3    | 86%   |
+| tests\generators.py         | 23    | 2    | 91%   |
 | tests\test_masks.py         | 19    | 0    | 100%  |
 | tests\test_processing.py    | 12    | 0    | 100%  |
 | tests\test_widget.py        | 8     | 0    | 100%  |
 |-----------------------------|-------|------|-------|
-| **TOTAL**                   | **100** | **4**  | **96%** |
+| **TOTAL**                   | **137** | **7**  | **95%** |
 
 
 ## Лицензия:
