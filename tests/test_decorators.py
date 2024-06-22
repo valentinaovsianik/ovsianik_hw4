@@ -1,6 +1,7 @@
 import pytest
 from src.decorators import log
 
+
 def test_log_file():
     filename = "mylog.txt"
 

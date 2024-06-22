@@ -1,4 +1,2 @@
 my_function ok
 my_function error: ZeroDivisionError. Inputs: (1, 0), {}
-my_function ok
-my_function error: ZeroDivisionError. Inputs: (1, 0), {}
