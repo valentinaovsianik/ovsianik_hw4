@@ -24,7 +24,7 @@ def log(filename=None):
                     f"{func.__name__} error: {type(e).__name__}. Inputs: {args}, {kwargs}"  # Cообщение об ошибке
                 )
                 if filename:  # Если filename указан
-                    with open(filename, "a") as f:
+                    with open(filename, "a") as f:  # Открываем файл
                         f.write(error_message + "\n")  # Записываем сообщение об ошибке
                 else:  # Если filename не указан, выводим сообщение об ошибке в консоль
                     print(error_message)
@@ -33,11 +33,3 @@ def log(filename=None):
         return wrapper  # Возвращаем функцию-обертку wrapper
 
     return decorator  # Возвращаем функцию-декоратор
-
-
-@log(filename="mylog.txt")
-def my_function(x, y):
-    return x + y
-
-
-my_function(1, 2)
