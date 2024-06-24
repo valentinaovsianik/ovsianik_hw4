@@ -34,14 +34,17 @@ get_mask_account("73654108430135874305")
 ### `sort_by_date`
 Функция для сортировки операций по дате.
 
-### `def filter_by_currency`
+### `filter_by_currency`
 Функция фильтрации операций по валюте
 
-### `def transaction_descriptions`
+### `transaction_descriptions`
 Функция, которая возвращает описание каждой операции в списке
 
-### `def filter_by_currency`
-Генератор номеров бнковских карт в формат XXXX XXXX XXXX XXXX
+### `filter_by_currency`
+Генератор номеров банковских карт в формат XXXX XXXX XXXX XXXX
+
+### `log`
+Декоратор логирует вызов функции и ее результат в файл или в консоль
 
 
 ## Установка:
@@ -59,18 +62,20 @@ git clone git@github.com
 | Name                        | Stmts | Miss | Cover |
 |-----------------------------|-------|------|-------|
 | src\__init__.py             | 0     | 0    | 100%  |
+| src\decorators.py           | 22    | 2    |  91%  |
 | src\generators.py           | 11    | 1    |  91%  |
 | src\masks.py                | 13    | 0    | 100%  |
 | src\processing.py           | 11    | 1    | 91%   |
 | src\widget.py               | 18    | 0    | 100%  |
 | tests\__init__.py           | 0     | 0    | 100%  |
 | tests\conftest.py           | 22    | 3    | 86%   |
+| tests\decorators.py         | 23    | 0    | 100%  |
 | tests\generators.py         | 23    | 2    | 91%   |
 | tests\test_masks.py         | 19    | 0    | 100%  |
 | tests\test_processing.py    | 12    | 0    | 100%  |
 | tests\test_widget.py        | 8     | 0    | 100%  |
 |-----------------------------|-------|------|-------|
-| **TOTAL**                   | **137** | **7**  | **95%** |
+| **TOTAL**                   | **182** | **9**  | **95%** |
 
 
 ## Лицензия:
