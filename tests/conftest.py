@@ -1,5 +1,5 @@
 import pytest
-
+from unittest.mock import patch
 
 @pytest.fixture()
 def card_number():
@@ -96,3 +96,13 @@ def transactions():
             "to": "Счет 14211924144426031657",
         },
     ]
+
+@pytest.fixture
+def mock_exists_true():
+    with patch("os.path.exists", return_value=True) as mock_exists:
+        yield mock_exists
+
+@pytest.fixture
+def mock_exists_false():
+    with patch("os.path.exists", return_value=False) as mock_exists:
+        yield mock_exists
