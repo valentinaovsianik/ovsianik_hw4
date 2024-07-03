@@ -17,7 +17,7 @@ def convert_currency(transaction: dict) -> float:
         if currency == "RUB":  # Если валюта транзакции в рублях, возвращаем сумму
             return amount
 
-        api_url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={currency}&amount={amount}"
+        api_url = f"https://api.apilayer.com/exchangerates_data/convert?from={currency}&to=RUB&amount={amount}"
         headers = {"apikey": api_key}
 
         response = requests.get(api_url, headers=headers)  # Отправляем get-запрос к API
@@ -25,8 +25,12 @@ def convert_currency(transaction: dict) -> float:
 
         data = response.json()  # Парсим JSON-ответ
 
-        converted_amount = data["result"]  # Получаем конвертируемую сумму в рублях
-        return converted_amount
+        if "result" in data:
+            converted_amount = data["result"]  # Получаем конвертируемую сумму в рублях
+            return converted_amount
+        else:
+            print(f"Missing 'result' key in JSON response: {data}")
+            return None
 
     # Обработка исключений
     except requests.exceptions.RequestException as e:  # "Ловим" проблемы, связанные с запросом

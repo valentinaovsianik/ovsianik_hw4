@@ -5,12 +5,6 @@ from unittest.mock import patch
 from src.external_api import convert_currency
 
 
-real_file_path = "../data/operations.json"
-
-with open(real_file_path, "r", encoding="utf-8") as file:
-    transactions_data = json.load(file)
-
-
 @pytest.mark.parametrize(
     "transaction, expected_amount",
     [
@@ -18,11 +12,14 @@ with open(real_file_path, "r", encoding="utf-8") as file:
         ({"amount": 100, "currency": "EUR"}, 8750),
     ],
 )
-def test_convert_currency(transaction, expected_amount, mock_requests_get):
-    """Тест для конвертации рубли"""
-    mock_requests_get.return_value.json.return_value = {"rates": {"RUB": 70, "USD": 1, "EUR": 0.8}}
+@patch("src.external_api.requests.get")
+def test_convert_currency(mock_get, transaction, expected_amount):
+    """Тест для конвертации в рубли"""
+    mock_get.return_value.json.return_value = {"result": expected_amount}
     converted_amount = convert_currency(transaction)
     assert converted_amount == expected_amount
+
+    print(f"Converted amount: {converted_amount} RUB")
 
 
 def test_convert_currency_rub():
