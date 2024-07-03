@@ -1,5 +1,7 @@
 import pytest
 from unittest.mock import patch
+import requests
+
 
 @pytest.fixture()
 def card_number():
@@ -97,12 +99,23 @@ def transactions():
         },
     ]
 
+
+# Фикстура с patch для имитации существования файла
 @pytest.fixture
 def mock_exists_true():
     with patch("os.path.exists", return_value=True) as mock_exists:
         yield mock_exists
 
+
+# Фикстура с patch для имитации отсутствия файла
 @pytest.fixture
 def mock_exists_false():
     with patch("os.path.exists", return_value=False) as mock_exists:
         yield mock_exists
+
+
+# Фикстура для мокирования requests.get для имитации ответов от API
+@pytest.fixture
+def mock_requests_get():
+    with patch.object(requests, "get") as mock_get:
+        yield mock_get

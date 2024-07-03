@@ -14,7 +14,7 @@ def read_transactions(file_path: str) -> list[dict]:
                 return data
             else:
                 return []
-    except (json.JSONDecodeError, OSError):  # Возвращаем пустой список в случае ошибки прич тении или декодировании
+    except (json.JSONDecodeError, OSError):  # Возвращаем пустой список в случае ошибки при чтении или декодировании
         return []
 
 
