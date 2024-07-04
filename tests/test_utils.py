@@ -32,6 +32,14 @@ def test_file_exists_and_empty_data(mock_exists_true):
         mock_file.assert_called_once_with("dummy_operations.json", "r", encoding="utf-8")
 
 
+def test_empty_file(mock_exists_true):
+    """Тест для пустого файла"""
+    with patch("builtins.open", mock_open(read_data="")) as mock_file:
+        result = read_transactions("dummy_operations.json")
+        assert result == []
+        mock_file.assert_called_once_with("dummy_operations.json", "r", encoding="utf-8")
+
+
 def test_error_file_reading(mock_exists_true):
     """Тест: ошибка при чтении файла"""
     with patch("builtins.open", mock_open()) as mock_file:
@@ -41,9 +49,51 @@ def test_error_file_reading(mock_exists_true):
         mock_file.assert_called_once_with("dummy_operations.json", "r", encoding="utf-8")
 
 
+def test_file_reading_with_other_error(mock_exists_true):
+    """Тест: когда возникает ошибка IOError при чтении"""
+    with patch("builtins.open", mock_open()) as mock_file:
+        mock_file.side_effect = IOError
+        result = read_transactions("dummy_operations.json")
+        assert result == []
+        mock_file.assert_called_once_with("dummy_operations.json", "r", encoding="utf-8")
+
+
 def test_read_transactions_with_invalid_json(mock_exists_true):
     """Тест для случая, когда json неверный"""
     mock_open_data = "{'key': 'value'"  # Неверный json (нет закрывающей скобки
+    with patch("builtins.open", mock_open(read_data=mock_open_data)):
+        result = read_transactions("dummy_operations.json")
+        assert result == []
+
+
+def test_read_transactions_with_non_list(mock_exists_true):
+    """Тест: когда содержимое файла не список"""
+    mock_open_data = "{'key': 'value'}"  # Неверный формат данных (словарь, а не список)
+    with patch("builtins.open", mock_open(read_data=mock_open_data)):
+        result = read_transactions("dummy_operations.json")
+        assert result == []
+
+
+def test_read_transactions_with_invalid_encoding():
+    """Тест: когда файл c неверной кодировкой"""
+    mock_open_data = b"{}"
+    with patch("builtins.open", mock_open(read_data=mock_open_data)) as mock_file:
+        mock_file.side_effect = UnicodeDecodeError("utf-8", b"{}", 0, 1, "Mock decode error")
+        result = read_transactions("dummy_operations.json")
+    assert result == []
+
+
+def test_read_transactions_nonexistent_file():
+    """Тест: на несуществующий файл"""
+    with patch("builtins.open", mock_open()) as mock_file:
+        mock_file.side_effect = FileNotFoundError
+        result = read_transactions("dummy_operations.json")
+        assert result == []
+
+
+def test_read_transactions_with_string(mock_exists_true):
+    """Тест: когда содержимое файла строка"""
+    mock_open_data = '"string_data"'
     with patch("builtins.open", mock_open(read_data=mock_open_data)):
         result = read_transactions("dummy_operations.json")
         assert result == []
