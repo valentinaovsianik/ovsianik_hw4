@@ -37,3 +37,11 @@ def test_error_file_reading(mock_exists_true):
         result = read_transactions("dummy_operations.json")
         assert result == []
         mock_file.assert_called_once_with("dummy_operations.json", "r", encoding="utf-8")
+
+
+def test_read_transactions_with_invalid_json(mock_exists_true):
+    """Тест для случая, когда json неверный"""
+    mock_open_data = "{'key': 'value'" # Неверный json (нет закрывающей скобки
+    with patch("builtins.open", mock_open(read_data=mock_open_data)):
+        result = read_transactions("dummy_operations.json")
+        assert result == []
