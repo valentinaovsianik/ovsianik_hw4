@@ -1,6 +1,8 @@
-import pytest
 import json
 from unittest.mock import mock_open, patch
+
+import pytest
+
 from src.utils import read_transactions
 
 
@@ -41,7 +43,7 @@ def test_error_file_reading(mock_exists_true):
 
 def test_read_transactions_with_invalid_json(mock_exists_true):
     """Тест для случая, когда json неверный"""
-    mock_open_data = "{'key': 'value'" # Неверный json (нет закрывающей скобки
+    mock_open_data = "{'key': 'value'"  # Неверный json (нет закрывающей скобки
     with patch("builtins.open", mock_open(read_data=mock_open_data)):
         result = read_transactions("dummy_operations.json")
         assert result == []

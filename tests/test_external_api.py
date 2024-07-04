@@ -1,7 +1,9 @@
+import json
+from unittest.mock import Mock, patch
+
 import pytest
 import requests
-import json
-from unittest.mock import patch, Mock
+
 from src.external_api import convert_currency
 
 
