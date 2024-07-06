@@ -11,7 +11,7 @@ file_handler = logging.FileHandler(log_filename, mode="w", encoding="utf-8")
 file_handler.setLevel(logging.DEBUG)
 
 #  Задаем формат сообщений
-formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s","%Y-%m-%d %H:%M:%S" )
+formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s", "%Y-%m-%d %H:%M:%S")
 file_handler.setFormatter(formatter)
 
 #  Добавляем обработчик к логгеру
@@ -60,4 +60,3 @@ if __name__ == "__main__":
 
     print(get_mask_card_number(card_number))
     print(get_mask_account(account_number))
-
