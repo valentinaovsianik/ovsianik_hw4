@@ -1,22 +1,13 @@
 import logging
+import os.path
 from datetime import datetime
 
-log_directory = "C:\\Users\\Dell\\PycharmProjects\\ovsianik_hw4\\logs\\"
-module_name = "masks"
 
-log_filename = f"{log_directory}/{module_name}_{datetime.now().strftime('%Y-%m-%d')}.log"
-
-#  Создаем обработчик для записи логов в файл
-file_handler = logging.FileHandler(log_filename, mode="w", encoding="utf-8")
-file_handler.setLevel(logging.DEBUG)
-
-#  Задаем формат сообщений
-formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s", "%Y-%m-%d %H:%M:%S")
-file_handler.setFormatter(formatter)
-
-#  Создаем логер и добавляем обработчик к нему
-logger = logging.getLogger(module_name)
+logger = logging.getLogger("masks")
 logger.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler("logs/masks.log", mode="w")
+file_formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s", "%Y-%m-%d %H:%M:%S")
+file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 
 
