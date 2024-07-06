@@ -14,7 +14,7 @@ file_handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s", "%Y-%m-%d %H:%M:%S")
 file_handler.setFormatter(formatter)
 
-#  Добавляем обработчик к логгеру
+#  Создаем логер и добавляем обработчик к нему
 logger = logging.getLogger(module_name)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(file_handler)
@@ -55,7 +55,7 @@ def get_mask_account(account_number: str) -> str:
 
 # Примеры работы функций
 if __name__ == "__main__":
-    card_number = "700079228960636123"
+    card_number = "7000792289606361"
     account_number = "73654108430135874305"
 
     print(get_mask_card_number(card_number))
