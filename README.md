@@ -46,6 +46,11 @@ get_mask_account("73654108430135874305")
 ### `log`
 Декоратор логирует вызов функции и ее результат в файл или в консоль
 
+### `read_transactions`
+Функция читает данные о финансовых транзакциях из JSON-файла и возвращает список словарей
+
+### `convert_currency`
+Функция конвертертации суммы транзакции в рубли с использованием внешнего API
 
 ## Установка:
 Клонируйте репозиторий:
@@ -59,23 +64,27 @@ git clone git@github.com
 
 ## Покрытие тестами:
 
-| Name                        | Stmts | Miss | Cover |
-|-----------------------------|-------|------|-------|
-| src\__init__.py             | 0     | 0    | 100%  |
-| src\decorators.py           | 22    | 2    |  91%  |
-| src\generators.py           | 11    | 1    |  91%  |
-| src\masks.py                | 13    | 0    | 100%  |
-| src\processing.py           | 11    | 1    | 91%   |
-| src\widget.py               | 18    | 0    | 100%  |
-| tests\__init__.py           | 0     | 0    | 100%  |
-| tests\conftest.py           | 22    | 3    | 86%   |
-| tests\decorators.py         | 23    | 0    | 100%  |
-| tests\generators.py         | 23    | 2    | 91%   |
-| tests\test_masks.py         | 19    | 0    | 100%  |
-| tests\test_processing.py    | 12    | 0    | 100%  |
-| tests\test_widget.py        | 8     | 0    | 100%  |
-|-----------------------------|-------|------|-------|
-| **TOTAL**                   | **182** | **9**  | **95%** |
+| Name                        | Stmts  | Miss | Cover |
+|-----------------------------|------- |------|-------|
+| src\__init__.py             | 0      | 0    | 100%  |
+| src\decorators.py           | 22     | 2    |  91%  |
+| src\external_api.py         | 33     | 10   |  70%  |
+| src\generators.py           | 11     | 1    |  91%  |
+| src\masks.py                | 13     | 0    | 100%  |
+| src\processing.py           | 11     | 1    | 91%   |
+| src\utils.py                | 17     | 4    | 76%   |
+| src\widget.py               | 18     | 0    | 100%  |
+| tests\__init__.py           | 0      | 0    | 100%  |
+| tests\conftest.py           | 36     | 3    | 92%   |
+| tests\decorators.py         | 23     | 0    | 100%  |
+| tests\test_external_api.py  | 21     | 0    | 100%  |
+| tests\generators.py         | 23     | 2    | 91%   |
+| tests\test_masks.py         | 19     | 0    | 100%  |
+| tests\test_processing.py    | 12     | 0    | 100%  |
+| tests\test_utils.py         | 24     | 0    | 100%  |
+| tests\test_widget.py        | 8      | 0    | 100%  |
+|-----------------------------|------- |------|-------|
+| TOTAL                       | 291    | 23   | 92%   |
 
 
 ## Лицензия:
