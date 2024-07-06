@@ -55,7 +55,7 @@ def get_mask_account(account_number: str) -> str:
 
 # Примеры работы функций
 if __name__ == "__main__":
-    card_number = "7000792289606361"
+    card_number = "70007922896063611"
     account_number = "73654108430135874305"
 
     print(get_mask_card_number(card_number))
