@@ -2,10 +2,14 @@ import logging
 import os.path
 from datetime import datetime
 
+log_dir = os.path.join(os.path.dirname(__file__), "..", "logs")
+
+os.makedirs(log_dir, exist_ok=True)
 
 logger = logging.getLogger("masks")
 logger.setLevel(logging.DEBUG)
-file_handler = logging.FileHandler("logs/masks.log", mode="w")
+
+file_handler = logging.FileHandler(os.path.join(log_dir, "masks.log"), mode="w", encoding="utf-8")
 file_formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s", "%Y-%m-%d %H:%M:%S")
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
@@ -46,7 +50,7 @@ def get_mask_account(account_number: str) -> str:
 
 # Примеры работы функций
 if __name__ == "__main__":
-    card_number = "70007922896063611"
+    card_number = "7000792289606361"
     account_number = "73654108430135874305"
 
     print(get_mask_card_number(card_number))

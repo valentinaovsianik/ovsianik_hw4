@@ -3,23 +3,16 @@ import logging
 import os
 from datetime import datetime
 
-log_directory = "C:\\Users\\Dell\\PycharmProjects\\ovsianik_hw4\\logs\\"
-module_name = "utils"
+log_dir = os.path.join(os.path.dirname(__file__), "..", "logs")
 
-#  Формируем имя файла
-log_filename = f"{log_directory}/{module_name}_{datetime.now().strftime('%Y-%m-%d')}.log"
+os.makedirs(log_dir, exist_ok=True)
 
-#  Создаем обработчик для записи логов в файл
-file_handler = logging.FileHandler(log_filename, mode="w", encoding="utf-8")
-file_handler.setLevel(logging.DEBUG)
-
-#  Задаем формат сообщений
-formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s", "%Y-%m-%d %H:%M:%S")
-file_handler.setFormatter(formatter)
-
-#  Создаем логер и добавляем обработчик к нему
-logger = logging.getLogger(module_name)
+logger = logging.getLogger("utils")
 logger.setLevel(logging.DEBUG)
+
+file_handler = logging.FileHandler(os.path.join(log_dir, "utils.log"), mode="w", encoding="utf-8")
+file_formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s", "%Y-%m-%d %H:%M:%S")
+file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 
 
