@@ -1,6 +1,7 @@
 import json
 from unittest.mock import mock_open, patch
-
+import os
+import pandas as pd
 import pytest
 
 from src.utils import read_transactions
@@ -97,3 +98,24 @@ def test_read_transactions_with_string(mock_exists_true):
     with patch("builtins.open", mock_open(read_data=mock_open_data)):
         result = read_transactions("dummy_operations.json")
         assert result == []
+
+
+# Тест для проверки чтения csv-файла
+@patch("src.utils.pd.read_csv")
+@patch("os.path.exists", return_value=True)
+def test_read_transactions_csv(mock_exists, mock_read_csv):
+    mock_read_csv.return_value = pd.DataFrame([{"id": 1, "amount": 100}, {"id": 2, "amount": 200}])
+    result = read_transactions("dummy_operations.csv")
+    assert result == [{"id": 1, "amount": 100}, {"id": 2, "amount": 200}]
+    mock_read_csv.assert_called_once_with("dummy_operations.csv")
+
+
+# Тест для проверки чтения XLSX-файла
+@patch("src.utils.pd.read_excel")
+@patch("os.path.exists", return_value=True)
+def test_read_transactions_xlsx(mock_exists, mock_read_excel):
+    mock_read_excel.return_value = pd.DataFrame([{"id": 1, "amount": 100}, {"id": 2, "amount": 200}])
+    expected_result = [{"id": 1, "amount": 100}, {"id": 2, "amount": 200}]
+    result = read_transactions("dummy_operations.xlsx")
+    assert result == expected_result
+    mock_read_excel.assert_called_once_with("dummy_operations.xlsx")
