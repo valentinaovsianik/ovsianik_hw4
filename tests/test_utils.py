@@ -1,6 +1,7 @@
 import json
-from unittest.mock import mock_open, patch
 import os
+from unittest.mock import mock_open, patch
+
 import pandas as pd
 import pytest
 
@@ -107,7 +108,7 @@ def test_read_transactions_csv(mock_exists, mock_read_csv):
     mock_read_csv.return_value = pd.DataFrame([{"id": 1, "amount": 100}, {"id": 2, "amount": 200}])
     result = read_transactions("dummy_operations.csv")
     assert result == [{"id": 1, "amount": 100}, {"id": 2, "amount": 200}]
-    mock_read_csv.assert_called_once_with("dummy_operations.csv")
+    mock_read_csv.assert_called_once_with("dummy_operations.csv", sep=";")
 
 
 # Тест для проверки чтения XLSX-файла

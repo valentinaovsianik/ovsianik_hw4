@@ -1,8 +1,9 @@
 import json
 import logging
 import os
-import pandas as pd
 from datetime import datetime
+
+import pandas as pd
 
 log_dir = os.path.join(os.path.dirname(__file__), "..", "logs")
 
@@ -47,7 +48,7 @@ def read_transactions(file_path: str) -> list[dict]:
                     return []
 
         elif file_extension == ".csv":
-            data = pd.read_csv(file_path)  # Читаем csv-файл
+            data = pd.read_csv(file_path, sep=";")  # Читаем csv-файл
             logger.info(f"Данные из файла {file_path} прочитаны успешно")
             return data.to_dict(orient="records")
 
