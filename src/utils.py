@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 from datetime import datetime
 
 import pandas as pd
@@ -70,15 +71,38 @@ def read_transactions(file_path: str) -> list[dict]:
         return []
 
 
+def search_transactions(transactions: list[dict], search_string: str) ->list[dict]:
+    """Ищет транзакции, в описании которых есть заданная строка поиска"""
+
+    search_pattern = re.compile(re.escape(search_string), re.IGNORECASE) # Компилируем регулярное выражение для строки поиска
+
+    matched_transactions = [] # Создаем список для хранения найденных транзакций
+
+    for transaction in transactions: # Проверяем, есть ли описание в транзакции и соответствует ли оно строке поиска
+        if isinstance(transaction.get("description"), str) and search_pattern.search(transaction["description"]):
+            matched_transactions.append(transaction)
+
+    return matched_transactions
+
+
 if __name__ == "__main__":
-    file_path_json = os.path.join(os.path.dirname(__file__), "../data/operations.json")
-    file_path_csv = os.path.join(os.path.dirname(__file__), "../data/transactions.csv")
-    file_path_xlsx = os.path.join(os.path.dirname(__file__), "../data/transactions_excel.xlsx")
+    file_path = os.path.join(os.path.dirname(__file__), "..", "data", "transactions.csv")
+    search_string = "Перевод с карты на карту"
 
-    transactions_json = read_transactions(file_path_json)
-    transactions_csv = read_transactions(file_path_csv)
-    transactions_xlsx = read_transactions(file_path_xlsx)
+    transactions = read_transactions(file_path)
+    result = search_transactions(transactions, search_string)
 
-    print("JSON Transactions", transactions_json)
-    print("CSV Transactions", transactions_csv)
-    print("XLSX Transactions", transactions_xlsx)
+    for transaction in result:
+        print(transaction)
+
+    # file_path_json = os.path.join(os.path.dirname(__file__), "../data/operations.json")
+    # file_path_csv = os.path.join(os.path.dirname(__file__), "../data/transactions.csv")
+    # file_path_xlsx = os.path.join(os.path.dirname(__file__), "../data/transactions_excel.xlsx")
+    #
+    # transactions_json = read_transactions(file_path_json)
+    # transactions_csv = read_transactions(file_path_csv)
+    # transactions_xlsx = read_transactions(file_path_xlsx)
+    #
+    # print("JSON Transactions", transactions_json)
+    # print("CSV Transactions", transactions_csv)
+    # print("XLSX Transactions", transactions_xlsx)
