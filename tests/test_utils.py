@@ -3,9 +3,10 @@ import os
 from unittest.mock import mock_open, patch
 
 import pandas as pd
+import re
 import pytest
 
-from src.utils import read_transactions
+from src.utils import read_transactions, search_transactions
 
 
 def test_file_exists_and_valid_data(mock_exists_true):
@@ -120,3 +121,21 @@ def test_read_transactions_xlsx(mock_exists, mock_read_excel):
     result = read_transactions("dummy_operations.xlsx")
     assert result == expected_result
     mock_read_excel.assert_called_once_with("dummy_operations.xlsx")
+
+
+# Тест для поиска в CSV-файле
+def test_search_transactions_by_description_csv(csv_transactions_data):
+    results = search_transactions(csv_transactions_data, "Перевод организации")
+    assert any(transaction["description"] == "Перевод организации" for transaction in results)
+
+
+# Тест для поиска в xlsx-файле
+def test_search_transactions_by_description_xlsx(xlsx_transactions_data):
+    results = search_transactions(xlsx_transactions_data, "Перевод организации")
+    assert any(transaction["description"] == "Перевод организации" for transaction in results)
+
+
+# Тест для поиска в json-файле
+def test_search_transactions_by_description_json(json_transactions_data):
+    results = search_transactions(json_transactions_data, "Перевод организации")
+    assert any(transaction["description"] == "Перевод организации" for transaction in results)
