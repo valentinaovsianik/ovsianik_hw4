@@ -94,7 +94,7 @@ def categorize_transactions(transactions: list[dict], categories: list) -> dict[
 
     for transaction in transactions:
         category = transaction.get("description")
-        if category in categories:
+        if category and category in categories:
             category_counter[category] += 1
     return dict(category_counter)
 

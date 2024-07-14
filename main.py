@@ -1,6 +1,7 @@
 import csv
 import json
 import os
+from collections import Counter
 from datetime import datetime
 from functools import wraps
 
@@ -22,7 +23,7 @@ def main():
     print("2. Получить информацию о транзакциях из CSV-файла")
     print("3. Получить информацию о транзакциях из XLSX-файла")
 
-    base_dir = os.path.dirname(os.path.abspath(__file__)) # Определяем базовый путь к папке data
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # Определяем базовый путь к папке data
     data_dir = os.path.join(base_dir, "data")
 
     user_choice = input("Пользователь: ")
@@ -116,12 +117,14 @@ def main():
                 amount = transaction.get("amount")
                 print(f"{date} {description}\nСчет {masked_account}\nСумма: {amount} {currency}\n")
 
-            # Категоризация транзакций и вывод количества транзакций по категориям
-            categories = ["EXECUTED", "CANCELED", "PENDING"]
-            category_counts = categorize_transactions(filtered_transactions, categories)
-            print("Количество транзакций по категориям:")
-            for category, count in category_counts.items():
-                print(f"{category}: {count}")
+        # Категоризация транзакций и вывод количества транзакций по категориям
+        categories = list(
+            {transaction.get("description") for transaction in transactions if "description" in transaction}
+        )
+        category_counts = categorize_transactions(filtered_transactions, categories)
+        print("Количество транзакций по категориям:")
+        for category, count in category_counts.items():
+            print(f"{category}: {count}")
     else:
         print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
 
