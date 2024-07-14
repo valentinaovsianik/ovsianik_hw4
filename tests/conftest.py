@@ -120,3 +120,33 @@ def mock_exists_false():
 def mock_requests_get():
     with patch.object(requests, "get") as mock_get:
         yield mock_get
+
+
+# Фикстура для CSV-файла
+@pytest.fixture
+def csv_transactions_data():
+    transactions_data = [
+        {"cy_name": "USD", "currency_code": "USD", "from": "John", "to": "Doe", "description": "Перевод организации"},
+        {"cy_name": "EUR", "currency_code": "EUR", "from": "Jane", "to": "Smith", "description": "Оплата услуг"}
+        ]
+    return transactions_data
+
+
+# Фикстура для xlsx-файла
+@pytest.fixture
+def xlsx_transactions_data():
+    transactions_data = [
+        {"cy_name": "USD", "currency_code": "USD", "from": "John", "to": "Doe", "description": "Перевод организации"},
+        {"cy_name": "EUR", "currency_code": "EUR", "from": "Jane", "to": "Smith", "description": "Оплата услуг"}
+        ]
+    return transactions_data
+
+
+# Фикстура для json-файла
+@pytest.fixture
+def json_transactions_data():
+    transactions_data = [
+        {"cy_name": "USD", "currency_code": "USD", "from": "John", "to": "Doe", "description": "Перевод организации"},
+        {"cy_name": "EUR", "currency_code": "EUR", "from": "Jane", "to": "Smith", "description": "Оплата услуг"}
+        ]
+    return transactions_data
