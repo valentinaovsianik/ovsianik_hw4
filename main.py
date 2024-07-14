@@ -51,39 +51,38 @@ def main():
         for status in valid_statuses:
             print(status)
         # Фильтрация транзакций по статусу
-        status = input("Введите статус, по которому необходимо выполнить фильтрацию. \nПользователь: ").upper()
+        status = input("Введите статус, по которому необходимо выполнить фильтрацию. \nПользователь: ").strip().upper()
         if status in valid_statuses:
             filtered_transactions = list(filter_by_state(transactions, status))
-            print(f'Операции отфильтрованы по статусу \"{status}\"')
+            print(f'Операции отфильтрованы по статусу "{status}"')
             break
         else:
-            print(f'Статус операции \"{status}\" недоступен.')
+            print(f'Статус операции "{status}" недоступен.')
 
     # Сортировка транзакций по дате при необходимости
-    sort_choice = input("Отсортировать операции по дате? Да/Нет" "\nПользователь: ").lower()
+    sort_choice = input("Отсортировать операции по дате? Да/Нет" "\nПользователь: ").strip().lower()
     if sort_choice == "да":
-        order_choice = input("Отсортировать по возрастанию или по убыванию?\n ").lower()
+        order_choice = input("Отсортировать по возрастанию или по убыванию?\n ").strip().lower()
         if sort_order == "по возрастанию":
             filtered_transactions = sort_by_date(filtered_transactions, ascending=True)
         else:
             sort_order == "по убыванию"
             filtered_transactions = sort_by_date(filtered_transactions, ascending=False)
 
-
     # Вывод только рублевых транзакций при необходимости
-    currency_choice = input("Выводить только рублевые транзакции? Да/Нет" "\nПользователь: ").lower()
+    currency_choice = input("Выводить только рублевые транзакции? Да/Нет" "\nПользователь: ").strip().lower()
     if currency_choice == "да":
         filtered_transactions = filter_by_currency(filtered_transactions, "RUB")
 
     # Фильтрация транзакций по слову в описании при необходимости
     search_choice = input(
         "Отфильтровать список транзакций по определенному слову в описании? Да/Нет\nПользователь: "
-    ).lower()
+    ).strip().lower()
     if search_choice == "да":
         search_string = input("Введите слово для поиска в описании транзакций" "\nПользователь: ")
         filtered_transactions = search_transactions(filtered_transactions, search_string)
 
-    filtered_transactions = list(filtered_transactions) # Преобразование генератора в список
+    filtered_transactions = list(filtered_transactions)  # Преобразование генератора в список
 
     print("Распечатываю итоговый список транзакций...")
 
