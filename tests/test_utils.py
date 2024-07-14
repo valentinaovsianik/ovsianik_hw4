@@ -6,7 +6,7 @@ import pandas as pd
 import re
 import pytest
 
-from src.utils import read_transactions, search_transactions
+from src.utils import read_transactions, search_transactions, categorize_transactions
 
 
 def test_file_exists_and_valid_data(mock_exists_true):
@@ -139,3 +139,25 @@ def test_search_transactions_by_description_xlsx(xlsx_transactions_data):
 def test_search_transactions_by_description_json(json_transactions_data):
     results = search_transactions(json_transactions_data, "Перевод организации")
     assert any(transaction["description"] == "Перевод организации" for transaction in results)
+
+
+# Тест для categorize_transactions
+def test_categorize_transactions():
+    transactions = [
+        {"id": 650703, "state": "EXECUTED", "date": "2023-09-05T11:30:32Z", "amount": 16210, "currency_name": "Sol",
+         "currency_code": "PEN", "from": "Счет 58803664561298323391", "to": "Счет 39745660563456619397",
+         "description": "Перевод организации"},
+        {"id": 3598919, "state": "EXECUTED", "date": "2020-12-06T23:00:58Z", "amount": 29740, "currency_name": "Peso",
+         "currency_code": "COP", "from": "Discover 3172601889670065", "to": "Discover 0720428384694643",
+         "description": "Перевод с карты на карту"},
+        {"id": 593027, "state": "CANCELED", "date": "2023-07-22T05:02:01Z", "amount": 30368,
+         "currency_name": "Shilling", "currency_code": "TZS", "from": "Visa 1959232722494097",
+         "to": "Visa 6804119550473710", "description": "Перевод с карты на карту"},
+        {"id": 366176, "state": "EXECUTED", "date": "2020-08-02T09:35:18Z", "amount": 29482, "currency_name": "Rupiah",
+         "currency_code": "IDR", "from": "Discover 0325955596714937", "to": "Visa 3820488829287420",
+         "description": "Перевод с карты на карту"}
+        ]
+
+    categories = ["Перевод организации", "Перевод с карты на карту"]
+    expected_result = {"Перевод организации": 1, "Перевод с карты на карту": 3}
+    assert categorize_transactions(transactions, categories) == expected_result
