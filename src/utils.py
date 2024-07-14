@@ -1,6 +1,8 @@
 import json
 import logging
 import os
+import re
+from collections import Counter
 from datetime import datetime
 
 import pandas as pd
@@ -70,15 +72,113 @@ def read_transactions(file_path: str) -> list[dict]:
         return []
 
 
+def search_transactions(transactions: list[dict], search_string: str) -> list[dict]:
+    """Ищет транзакции, в описании которых есть заданная строка поиска"""
+
+    search_pattern = re.compile(
+        re.escape(search_string), re.IGNORECASE
+    )  # Компилируем регулярное выражение для строки поиска
+
+    matched_transactions = []  # Создаем список для хранения найденных транзакций
+
+    for transaction in transactions:  # Проверяем, есть ли описание в транзакции и соответствует ли оно строке поиска
+        if isinstance(transaction.get("description"), str) and search_pattern.search(transaction["description"]):
+            matched_transactions.append(transaction)
+
+    return matched_transactions
+
+
+def categorize_transactions(transactions: list[dict], categories: list) -> dict[str, int]:
+    """Разбивает транзакции по категориям в зависимости от описания и считает количество транзакций в каждой категории"""
+    category_counter = Counter()
+
+    for transaction in transactions:
+        category = transaction.get("description")
+        if category and category in categories:
+            category_counter[category] += 1
+    return dict(category_counter)
+
+
 if __name__ == "__main__":
-    file_path_json = os.path.join(os.path.dirname(__file__), "../data/operations.json")
-    file_path_csv = os.path.join(os.path.dirname(__file__), "../data/transactions.csv")
-    file_path_xlsx = os.path.join(os.path.dirname(__file__), "../data/transactions_excel.xlsx")
+    transactions = [
+        {
+            "id": 650703,
+            "state": "EXECUTED",
+            "date": "2023-09-05T11:30:32Z",
+            "amount": 16210,
+            "currency_name": "Sol",
+            "currency_code": "PEN",
+            "from": "Счет 58803664561298323391",
+            "to": "Счет 39745660563456619397",
+            "description": "Перевод организации",
+        },
+        {
+            "id": 3598919,
+            "state": "EXECUTED",
+            "date": "2020-12-06T23:00:58Z",
+            "amount": 29740,
+            "currency_name": "Peso",
+            "currency_code": "COP",
+            "from": "Discover 3172601889670065",
+            "to": "Discover 0720428384694643",
+            "description": "Перевод с карты на карту",
+        },
+        {
+            "id": 593027,
+            "state": "CANCELED",
+            "date": "2023-07-22T05:02:01Z",
+            "amount": 30368,
+            "currency_name": "Shilling",
+            "currency_code": "TZS",
+            "from": "Visa 1959232722494097",
+            "to": "Visa 6804119550473710",
+            "description": "Перевод с карты на карту",
+        },
+        {
+            "id": 366176,
+            "state": "EXECUTED",
+            "date": "2020-08-02T09:35:18Z",
+            "amount": 29482,
+            "currency_name": "Rupiah",
+            "currency_code": "IDR",
+            "from": "Discover 0325955596714937",
+            "to": "Visa 3820488829287420",
+            "description": "Перевод с карты на карту",
+        },
+        {
+            "id": 5380041,
+            "state": "CANCELED",
+            "date": "2021-02-01T11:54:58Z",
+            "amount": 23789,
+            "currency_name": "Peso",
+            "currency_code": "UYU",
+            "from": "",
+            "to": "Счет 23294994494356835683",
+            "description": "Открытие вклада",
+        },
+    ]
 
-    transactions_json = read_transactions(file_path_json)
-    transactions_csv = read_transactions(file_path_csv)
-    transactions_xlsx = read_transactions(file_path_xlsx)
+    categories = ["Перевод организации", "Перевод с карты на карту", "Открытие вклада"]
+    result = categorize_transactions(transactions, categories)
+    print(result)
 
-    print("JSON Transactions", transactions_json)
-    print("CSV Transactions", transactions_csv)
-    print("XLSX Transactions", transactions_xlsx)
+    # file_path = os.path.join(os.path.dirname(__file__), "..", "data", "transactions.csv")
+    # search_string = "Перевод с карты на карту"
+    #
+    # transactions = read_transactions(file_path)
+    # result = search_transactions(transactions, search_string)
+    #
+    # for transaction in result:
+    #     print(transaction)
+
+    # file_path_json = os.path.join(os.path.dirname(__file__), "../data/operations.json")
+    # file_path_csv = os.path.join(os.path.dirname(__file__), "../data/transactions.csv")
+    # file_path_xlsx = os.path.join(os.path.dirname(__file__), "../data/transactions_excel.xlsx")
+    #
+    # transactions_json = read_transactions(file_path_json)
+    # transactions_csv = read_transactions(file_path_csv)
+    # transactions_xlsx = read_transactions(file_path_xlsx)
+    #
+    # print("JSON Transactions", transactions_json)
+    # print("CSV Transactions", transactions_csv)
+    # print("XLSX Transactions", transactions_xlsx)
