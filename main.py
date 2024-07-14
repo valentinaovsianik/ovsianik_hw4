@@ -1,8 +1,8 @@
 import csv
 import json
+import os
 from datetime import datetime
 from functools import wraps
-import os
 
 import pandas as pd
 
@@ -22,10 +22,13 @@ def main():
     print("2. Получить информацию о транзакциях из CSV-файла")
     print("3. Получить информацию о транзакциях из XLSX-файла")
 
+    base_dir = os.path.dirname(os.path.abspath(__file__)) # Определяем базовый путь к папке data
+    data_dir = os.path.join(base_dir, "data")
+
     user_choice = input("Пользователь: ")
 
     if user_choice == "1":
-        file_path = os.path.join(os.path.dirname(__file__), "../data/operations.json")
+        file_path = os.path.join(data_dir, "operations.json")
         print("Для обработки выбран JSON-файл.")
     elif user_choice == "2":
         file_path = os.path.join(os.path.dirname(__file__), "../data/transactions.csv")
@@ -43,21 +46,23 @@ def main():
         print("Не удалось прочитать транзакции. Завершение программы.")
         return
 
-    valid_statuses = set(transaction["state"] for transaction in transactions)
+    print("Доступные для фильтровки статусы:")
+    valid_statuses = set()
+    for transaction in transactions:
+        if "state" in transaction:
+            valid_statuses.add(transaction["state"])
 
-    while True:
-        # Получение списка всех возможных статусов
-        print("Доступные для фильтровки статусы:")
-        for status in valid_statuses:
-            print(status)
-        # Фильтрация транзакций по статусу
-        status = input("Введите статус, по которому необходимо выполнить фильтрацию. \nПользователь: ").strip().upper()
-        if status in valid_statuses:
-            filtered_transactions = list(filter_by_state(transactions, status))
-            print(f'Операции отфильтрованы по статусу "{status}"')
-            break
-        else:
-            print(f'Статус операции "{status}" недоступен.')
+    statuses_str = ", ".join(valid_statuses)
+    print(statuses_str)
+
+    status = input("Введите статус, по которому необходимо выполнить фильтрацию. \nПользователь: ").strip().upper()
+
+    filtered_transactions = filter_by_state(transactions, status)  # Фильтруем транзакции по статусу
+    if not filtered_transactions:
+        print(f"Статус операции '{status}' недоступен.")
+        return
+
+    print(f"Операции отфильтрованы по статусу '{status}'")
 
     # Сортировка транзакций по дате при необходимости
     sort_choice = input("Отсортировать операции по дате? Да/Нет" "\nПользователь: ").strip().lower()
@@ -65,19 +70,21 @@ def main():
         sort_order = input("Отсортировать по возрастанию или по убыванию?\n ").strip().lower()
         ascending = sort_order == "по возрастанию"
 
-        if ascending:
-            filtered_transactions = sort_by_date(filtered_transactions, ascending=True)
-        else:
-            filtered_transactions = sort_by_date(filtered_transactions, ascending=False)
+        filtered_transactions = sort_by_date(filtered_transactions, reverse=not ascending)
 
     # Вывод только рублевых транзакций при необходимости
     currency_choice = input("Выводить только рублевые транзакции? Да/Нет" "\nПользователь: ").strip().lower()
     if currency_choice == "да":
         filtered_transactions = filter_by_currency(filtered_transactions, "RUB")
+    else:  # Конвертация валюты для операций не в рублях
+        filtered_transactions = [convert_currency(transaction) for transaction in filtered_transactions]
 
     # Фильтрация транзакций по слову в описании при необходимости
     search_choice = (
-        input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет\nПользователь: ").strip().lower())
+        input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет\nПользователь: ")
+        .strip()
+        .lower()
+    )
     if search_choice == "да":
         search_string = input("Введите слово для поиска в описании транзакций" "\nПользователь: ")
         filtered_transactions = search_transactions(filtered_transactions, search_string)
@@ -90,8 +97,8 @@ def main():
         print(f"\nВсего банковских операций в выборке: {len(filtered_transactions)}\n")
         for transaction in filtered_transactions:
             # Форматирование вывода информации о транзакции
-            date = transaction.get("date")
-            description = transaction.get("description", "")
+            date = get_data(transaction.get("date"))  # Преобразование даты
+            description = next(transaction_descriptions([transaction]))  # Получение описания транзакции
             currency = transaction.get("currency", "RUB")
 
             if "from" in transaction and "to" in transaction:
