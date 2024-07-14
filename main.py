@@ -62,11 +62,12 @@ def main():
     # Сортировка транзакций по дате при необходимости
     sort_choice = input("Отсортировать операции по дате? Да/Нет" "\nПользователь: ").strip().lower()
     if sort_choice == "да":
-        order_choice = input("Отсортировать по возрастанию или по убыванию?\n ").strip().lower()
-        if sort_order == "по возрастанию":
+        sort_order = input("Отсортировать по возрастанию или по убыванию?\n ").strip().lower()
+        ascending = sort_order == "по возрастанию"
+
+        if ascending:
             filtered_transactions = sort_by_date(filtered_transactions, ascending=True)
         else:
-            sort_order == "по убыванию"
             filtered_transactions = sort_by_date(filtered_transactions, ascending=False)
 
     # Вывод только рублевых транзакций при необходимости
@@ -75,9 +76,8 @@ def main():
         filtered_transactions = filter_by_currency(filtered_transactions, "RUB")
 
     # Фильтрация транзакций по слову в описании при необходимости
-    search_choice = input(
-        "Отфильтровать список транзакций по определенному слову в описании? Да/Нет\nПользователь: "
-    ).strip().lower()
+    search_choice = (
+        input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет\nПользователь: ").strip().lower())
     if search_choice == "да":
         search_string = input("Введите слово для поиска в описании транзакций" "\nПользователь: ")
         filtered_transactions = search_transactions(filtered_transactions, search_string)
@@ -87,7 +87,7 @@ def main():
     print("Распечатываю итоговый список транзакций...")
 
     if filtered_transactions:
-        print(f"Программа: \nВсего банковских операций в выборке: {len(filtered_transactions)}\n")
+        print(f"\nВсего банковских операций в выборке: {len(filtered_transactions)}\n")
         for transaction in filtered_transactions:
             # Форматирование вывода информации о транзакции
             date = transaction.get("date")
@@ -99,12 +99,14 @@ def main():
                 to_account = transaction["to"]
                 masked_from_account = get_mask_account(from_account)
                 masked_to_account = get_mask_account(to_account)
+                amount = transaction.get("amount")
                 print(
                     f"{date} {description}\n{masked_from_account} -> {masked_to_account}\nСумма: {amount} {currency}\n"
                 )
             else:
                 account = transaction.get("account", "")
                 masked_account = get_mask_account(account)
+                amount = transaction.get("amount")
                 print(f"{date} {description}\nСчет {masked_account}\nСумма: {amount} {currency}\n")
 
             # Категоризация транзакций и вывод количества транзакций по категориям
